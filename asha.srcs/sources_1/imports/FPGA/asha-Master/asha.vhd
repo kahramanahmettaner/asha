@@ -187,7 +187,10 @@ component AshaSiebensegment is
 		EnSevenSegmentClock : in std_logic; 					--! Enable-Signal des Treiberprozesses
 		EnSevenSegmentSlowClock : in std_logic; 					--! Enable-Signal fr Aktualisierung der Anzeige
 		SevenSegmentValue : in std_logic_vector (15 downto 0);  --! der Wert, der auf der Anzeige erscheinen soll
-		SevenSegment : out std_logic_vector(31 downto 0) 		--! treibt die 7-Segment-Anzeigen; alle, bei denen AN aktiviert ist
+		SevenSegment : out std_logic_vector(31 downto 0); 		--! treibt die 7-Segment-Anzeigen; alle, bei denen AN aktiviert ist
+		
+		-- Clock3Hz von clockdiv, damit die einzelnen Werte der Siebensegmentanzeige langsamer wechseln
+		Clock3Hz : in std_logic;
 	 );
 end component;
 
@@ -434,7 +437,10 @@ port map (
 	EnSevenSegmentClock=>En6kHz,	--! Enable-Signal des Treiberprozesses 
 	EnSevenSegmentSlowClock => En3Hz,       --! Enable-Signal fr Aktualisierung der Anzeige
 	SevenSegmentValue=>SevenSegmentValue, 	 --! der Wert, der auf der Anzeige erscheinen soll
-	SevenSegment=>SevenSegmentOut 			 --! treibt die 7-Segment-Anzeigen; alle, bei denen AN aktiviert ist
+	SevenSegment=>SevenSegmentOut, 			 --! treibt die 7-Segment-Anzeigen; alle, bei denen AN aktiviert ist
+
+	-- Clock3Hz von clockdiv, damit die einzelnen Werte der Siebensegmentanzeige langsamer wechseln
+	En3Hz=>Clock3Hz
 );
 
 --TM1637
