@@ -205,36 +205,36 @@ end component;
 -- Actor Module for 7Segment, LEDs and others actors
 component actor is
     Port ( 
-		Clock 				   :	in  std_logic; 			          --! TODO
-		Reset 				   :	in  std_logic; 					 	
-		Switches 			   : 	in  std_logic_vector(3 downto 0); 
-		ButtonsIn 			   :    in  std_logic_vector(3 downto 0);
-		SensorVibe 			   : 	in  std_logic;					 	 
-		SensorDoor 			   : 	in  std_logic; 					   
-		ADCRegister			   :	in  ADCRegisterType; 				
-		LEDsOut 			   :	out std_logic_vector(5 downto 0);	
-		SevenSegmentValue	   :	out std_logic_vector (15 downto 0);	
-		PWM1FanInsideValue     : 	out std_logic_vector(7 downto 0); 	
-		PWM2FanOutsideValue    : 	out std_logic_vector(7 downto 0); 	
-		PWM3LightValue 		   : 	out std_logic_vector(7 downto 0);	
-		PWM4PeltierValue 	   : 	out std_logic_vector(7 downto 0);		
-		PeltierDirection 	   : 	out std_logic;						     
+		Clock 				   :	in  std_logic; 			             --! Taktsignal
+		Reset 				   :	in  std_logic; 					 	 --! Resetsignal
+		Switches 			   : 	in  std_logic_vector(3 downto 0);    --! Die acht Schalter
+		ButtonsIn 			   :    in  std_logic_vector(3 downto 0);    --! Die vier Taster
+		SensorVibe 			   : 	in  std_logic;					 	 --! Eingang: Virbationssensor
+		SensorDoor 			   : 	in  std_logic; 					     --! Eingang: Tuersensor
+		ADCRegister			   :	in  ADCRegisterType; 				 --! Datenregister aller ADC-Werte
+		LEDsOut 			   :	out std_logic_vector(5 downto 0);	 --! Die acht LEDs
+		SevenSegmentValue	   :	out std_logic_vector (15 downto 0);	 --! treibt die 7-Segment-Anzeigen
+		PWM1FanInsideValue     : 	out std_logic_vector(7 downto 0); 	 --! Signalquellwert Luefter innen
+		PWM2FanOutsideValue    : 	out std_logic_vector(7 downto 0); 	 --! Signalquellwert Luefter aussen
+		PWM3LightValue 		   : 	out std_logic_vector(7 downto 0);	 --! Signalquellwert Licht
+		PWM4PeltierValue 	   : 	out std_logic_vector(7 downto 0);	 --! Signalquellwert Peltier
+		PeltierDirection 	   : 	out std_logic;						 --! Signalquellwert Peltier	Richtung
 		----- Werte von Bluetooth
-		LEDsBT 					:	in std_logic_vector(5 downto 0);	 
-		SevenSegmentValueBT		:	in std_logic_vector (15 downto 0);
-		PWM1FanInsideValueBT 	:	in std_logic_vector(7 downto 0);	 
-		PWM2FanOutsideValueBT 	:	in std_logic_vector(7 downto 0);	 
-		PWM3LightValueBT 		:	in std_logic_vector(7 downto 0);	
-		PWM4PeltierValueBT		:	in std_logic_vector(7 downto 0);	
-		PeltierDirectionBT		:   in std_logic;						 
+		LEDsBT 					:	in std_logic_vector(5 downto 0);	 --! Die acht LEDs
+		SevenSegmentValueBT		:	in std_logic_vector (15 downto 0);   --! 7SegmentEingang von BT
+		PWM1FanInsideValueBT 	:	in std_logic_vector(7 downto 0);	 --! Signalquellwert Luefter innen, von Bt
+		PWM2FanOutsideValueBT 	:	in std_logic_vector(7 downto 0);	 --! Signalquellwert Luefter aussen, von Bt
+		PWM3LightValueBT 		:	in std_logic_vector(7 downto 0);	 --! Signalquellwert Licht, von Bt
+		PWM4PeltierValueBT		:	in std_logic_vector(7 downto 0);	 --! Signalquellwert Peltier, von Bt
+		PeltierDirectionBT		:   in std_logic;						 --! Signalquellwert Peltier Richtung, von Bt
 		----- Werte von Regelung
-		PWM1FanInsideValueControl	:	in std_logic_vector(7 downto 0); 
-		PWM2FanOutsideValueControl  :	in std_logic_vector(7 downto 0); 
-		PWM3LightValueControl 		:	in std_logic_vector(7 downto 0); 
-		PWM4PeltierValueControl		:	in std_logic_vector(7 downto 0); 
-		PeltierDirectionControl		:	in std_logic;					      
-		ControlLightDiffOut 		:   in unsigned(12 downto 0);		  
-		ControlTempDiffOut  	    :   in unsigned(12 downto 0)		
+		PWM1FanInsideValueControl	:	in std_logic_vector(7 downto 0); --! Signalquellwert Luefter innen, von Regelung
+		PWM2FanOutsideValueControl  :	in std_logic_vector(7 downto 0); --! Signalquellwert Luefter aussen, von Regelung
+		PWM3LightValueControl 		:	in std_logic_vector(7 downto 0); --! Signalquellwert Licht, von Regelung
+		PWM4PeltierValueControl		:	in std_logic_vector(7 downto 0); --! Signalquellwert Peltier, von Regelung
+		PeltierDirectionControl		:	in std_logic;					 --! Signalquellwert Peltier Richtung, von Regelung
+		ControlLightDiffOut 		:   in unsigned(12 downto 0);		 --! Aktuelle Regeldifferenz Licht
+		ControlTempDiffOut  	    :   in unsigned(12 downto 0)		 --! Aktuelle Regeldifferenz Temperatur
 	);
 end component;
 
