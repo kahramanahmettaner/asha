@@ -279,9 +279,38 @@ begin
  -- when ... TODO
 		when ManualActor1|ManualActor2|ManualActor3 =>
 			LEDsOut(5 downto 4)<= "01";
-			LEDsOut(3 downto 0)<= "0101";
-		
+			-- LEDsOut(3 downto 0)<= "0101";
 
+			--- muss noch korrigiert werden
+			--- muss noch einige leds angezeigt werden bezüglich der Aktor
+			-- müssen sensorwerte ausgegeben werden? wenn ja wie? zusätzlich leds usw.?
+			
+			if (Switches(0) = '1') then
+				PWM1FanInsideValue <= b"11111111" -- Innenlüfter auf 100%
+			else
+				PWM1FanInsideValue <= b"00000000" -- Innenlüfter aus
+			end if;
+
+			if (Switches(1) = '1') then
+				PWM2FanOutsideValue <= b"11111111"; --Außenlüfter auf 100%
+			else
+				PWM2FanOutsideValue <= b"00000000"; --Außenlüfter aus
+			end if;
+
+			if (Switches(2) = '1') then
+				PWM3LightValue <= b"11111111"; --Licht auf 100%
+			else
+				PWM3LightValue <= b"00000000"; --Licht aus
+			end if;
+
+			if (Switches(3) = '1') then
+				PWM4PeltierValue <= b"11111111"; --Peltier auf 100%
+				PeltierDirection <= '1'; --Peltier auf Heizen
+			else
+				PWM4PeltierValue <= b"00000000"; --Peltier aus
+				PeltierDirection <= '1'; --Peltier auf Heizen
+			end if;
+		end if;
 
  -- Versuch 9
  -- Modus 3: geregelte Aktorsteuerung
