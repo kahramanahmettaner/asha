@@ -22,7 +22,7 @@ architecture Behavioral of AshaVibe is
 
   signal SensorVibeOld : std_logic; 	--! Speicherregister fuer alten Sensorzustand 
   
-begin
+ begin
 
   --folgende Zeile l�schen, wenn Vibe_Detect implementiert ist!
   -- SensorVibeHouseOn <= '1';
@@ -31,15 +31,15 @@ begin
   Vibe_Detect:Process (Clock) -- Vibrationsdetektor
   begin
     if rising_edge(Clock) then
-      -- TODO
-      -- Bei einer Erschütterung wird der Ausgang so gesetzt, dass das Haus ausgeschalt wird
-      if (SensorVibe = '0') then
-        SensorVibeHouseOn <= '0';
+        -- TODO
+        -- Bei einer Erschütterung wird der Ausgang so gesetzt, dass das Haus ausgeschalt wird
+        if (SensorVibe = '0') then
+            SensorVibeHouseOn <= '0';
       
-      -- Beim Reset wird der Ausgang zurückgesetzt  
-      elsif (Reset = '1') then
-        SensorVibeHouseOn <= '1';
-        
+        -- Beim Reset wird der Ausgang zurückgesetzt  
+        elsif (Reset = '1') then
+            SensorVibeHouseOn <= '1'; 
+        end if;
     end if;
   end Process Vibe_Detect; -- Vibrationsdetektor
 

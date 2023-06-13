@@ -31,7 +31,6 @@ entity actor is
 		----- Werte von Regelung
 		PWM1FanInsideValueControl : in std_logic_vector(7 downto 0); --! Signalquellwert Luefter innen, von Regelung
 		PWM2FanOutsideValueControl : in std_logic_vector(7 downto 0); --! Signalquellwert Luefter aussen, von Regelung
-		PWM3LightValueControl : in std_logic_vector(7 downto 0); --! Signalquellwert Licht, von Regelung
 		PWM4PeltierValueControl : in std_logic_vector(7 downto 0); --! Signalquellwert Peltier, von Regelung
 		PeltierDirectionControl : in std_logic; --! Signalquellwert Peltier Richtung, von Regelung
 		ControlLightDiffOut : in unsigned(12 downto 0); --! Aktuelle Regeldifferenz Licht
@@ -185,48 +184,50 @@ begin
  -- when state ... TODO	
 		when SensorRead1|SensorRead2|SensorRead3 => --Modus 1: Sensoren auslesen
 			LEDsOut(5 downto 4)<= "00";
-
-			if(ButtonsIn(2)='1') then
+            
+            -- Wenn Button(2) gedr�ckt wird, wird in den �bergangszustand gewechselt
+			if(ButtonsIn(2)='1') then 
 				case current_s is
-					when Init =>
+					when Init =>   -- Init 
 						next_s <= Init2;
-						LEDsOut(3 downto 0)<= "0000";
-					when Init2 =>
+						LEDsOut(3 downto 0)<= "0000"; -- LEDs anpassen
+					when Init2 =>   -- Init
 						next_s <= Init2;
-						LEDsOut(3 downto 0)<= "0000";
-					when Light =>
+						LEDsOut(3 downto 0)<= "0000"; -- LEDs anpassen
+					when Light =>   -- Lichtssensor
 						next_s <= Light2;
-						LEDsOut(3 downto 0)<= "1000";
-					when Light2 =>
+						LEDsOut(3 downto 0)<= "1000"; -- LEDs anpassen
+					when Light2 =>  -- Lichtssensor 
 						next_s <= Light2;
-						LEDsOut(3 downto 0)<= "1000";
-					when TempIn =>
+						LEDsOut(3 downto 0)<= "1000"; -- LEDs anpassen
+					when TempIn =>  -- Temperatursensor innen
 						next_s <= TempIn2;
-						LEDsOut(3 downto 0)<= "0100";
-					when TempIn2 =>
+						LEDsOut(3 downto 0)<= "0100"; -- LEDs anpassen
+					when TempIn2 => -- Temperatursensor innen
 						next_s <= TempIn2;
-						LEDsOut(3 downto 0)<= "0100";
-					when TempOut =>
+						LEDsOut(3 downto 0)<= "0100"; -- LEDs anpassen
+					when TempOut => -- Temperatursensor au�en
 						next_s <= TempOut2;
-						LEDsOut(3 downto 0)<= "0010";
-					when TempOut2 =>
+						LEDsOut(3 downto 0)<= "0010"; -- LEDs anpassen
+					when TempOut2 => -- Temperatursensor au�en
 						next_s <= TempOut2;
-						LEDsOut(3 downto 0)<= "0010";
-					when Vibe =>
+						LEDsOut(3 downto 0)<= "0010"; -- LEDs anpassen
+					when Vibe =>   -- Vibrationssensor
 						next_s <= Vibe2;
-						LEDsOut(3 downto 0)<= "0001";
-					when Vibe2 =>
+						LEDsOut(3 downto 0)<= "0001"; -- LEDs anpassen
+					when Vibe2 =>  -- Vibrationssensor
 						next_s <= Vibe2;
-						LEDsOut(3 downto 0)<= "0001";
-					when Door =>
+						LEDsOut(3 downto 0)<= "0001"; -- LEDs anpassen
+					when Door =>   -- Doorssensor
 						next_s <= Door2;
-						LEDsOut(3 downto 0)<= "0000";
-					when Door2 =>
+						LEDsOut(3 downto 0)<= "0000"; -- LEDs anpassen
+					when Door2 => -- Doorssensor
 						next_s <= Door2;
-						LEDsOut(3 downto 0)<= "0000";
+						LEDsOut(3 downto 0)<= "0000"; -- LEDs anpassen
 				end case;
 			end if;
 
+            -- Wenn Button(2) im �bergangszustand losgelassen wird, wird in den n�chsten Zustand gewechselt
 			if(ButtonsIn(2)='0') then
 				case current_s is
 					when Init => 
@@ -280,21 +281,17 @@ begin
 		when ManualActor1|ManualActor2|ManualActor3 =>
 			LEDsOut(5 downto 4)<= "01";
 			-- LEDsOut(3 downto 0)<= "0101";
-
-			--- muss noch korrigiert werden
-			--- muss noch einige leds angezeigt werden bezüglich der Aktor
-			-- müssen sensorwerte ausgegeben werden? wenn ja wie? zusätzlich leds usw.?
 			
 			if (Switches(0) = '1') then
-				PWM1FanInsideValue <= b"11111111" -- Innenlüfter auf 100%
+				PWM1FanInsideValue <= b"11111111"; -- Innenl�fter auf 100%
 			else
-				PWM1FanInsideValue <= b"00000000" -- Innenlüfter aus
+				PWM1FanInsideValue <= b"00000000"; -- Innenl�fter aus
 			end if;
 
 			if (Switches(1) = '1') then
-				PWM2FanOutsideValue <= b"11111111"; --Außenlüfter auf 100%
+				PWM2FanOutsideValue <= b"11111111"; --Au�enl�fter auf 100%
 			else
-				PWM2FanOutsideValue <= b"00000000"; --Außenlüfter aus
+				PWM2FanOutsideValue <= b"00000000"; --Au�enl�fter aus
 			end if;
 
 			if (Switches(2) = '1') then
@@ -310,8 +307,7 @@ begin
 				PWM4PeltierValue <= b"00000000"; --Peltier aus
 				PeltierDirection <= '1'; --Peltier auf Heizen
 			end if;
-		end if;
-
+			
  -- Versuch 9
  -- Modus 3: geregelte Aktorsteuerung
  -- when ... TODO

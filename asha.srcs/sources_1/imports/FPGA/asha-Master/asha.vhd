@@ -188,10 +188,8 @@ component AshaSiebensegment is
 		EnSevenSegmentSlowClock : in std_logic; 					--! Enable-Signal fr Aktualisierung der Anzeige
 		SevenSegmentValue : in std_logic_vector (15 downto 0);  --! der Wert, der auf der Anzeige erscheinen soll
 		SevenSegment : out std_logic_vector(31 downto 0); 		--! treibt die 7-Segment-Anzeigen; alle, bei denen AN aktiviert ist
-		
 		-- Clock3Hz von clockdiv, damit die einzelnen Werte der Siebensegmentanzeige langsamer wechseln
-		Clock3Hz : in std_logic;
-	 );
+		Clock3Hz : in std_logic );
 end component;
 
 --mit 2 pins zu zybo

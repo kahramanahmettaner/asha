@@ -65,23 +65,23 @@ begin
 
     -- Den Außenlüfter einschalten, wenn Counter < als gewünschter PWM-Wert und dieser dabei > 0
     if (PWMCounter <= unsigned(PWM2FanOutsideValue) and unsigned(PWM2FanOutsideValue) > 0) then
-      PWM2FanOutsideValue<='0';
+        PWM2FanOutsideSignal <= '0';
     else
-      PWM2FanOutsideValue<='1';
+        PWM2FanOutsideSignal <= '1';
     end if;
 
     -- Das Licht einschalten, wenn Counter < als gewünschter PWM-Wert und dieser dabei > 0
     if (PWMCounter <= unsigned(PWM3LightValue) and unsigned(PWM3LightValue) > 0) then
-      PWM3LightValue<='0';
+        PWM3LightSignal <= '0';
     else
-      PWM3LightValue<='1';
+        PWM3LightSignal <= '1';
     end if;
 
     -- Den Peltier einschalten, wenn Counter < als gewünschter PWM-Wert und dieser dabei > 0
     if (PWMCounter <= unsigned(PWM4PeltierValue) and unsigned(PWM4PeltierValue) > 0) then
-      PWM4PeltierValue<='0';
+        PWM4PeltierSignal <= '0';
     else
-      PWM4PeltierValue<='1';
+        PWM4PeltierSignal <= '1';
     end if;
          
   end Process PWM_Gen; 
