@@ -52,6 +52,10 @@ signal current_m,next_m:state_typeM;	--current and next state declaration.
 type state_typeS is (Init, Init2, Light, Light2, TempIn, TempIn2, TempOut, TempOut2, Vibe, Vibe2, Door, Door2 ); --type of state machine(S for Sensor).
 signal current_s,next_s: state_typeS; --current and next state declaration.
 
+-- Zustandsautomat für Seventsegmentanzeige bei Aktorsteuerung
+type state_typeActor7seg is (InitA1, InitA2, LightA1, LightA2, TempA1, TempA2);  
+signal current_actor7seg, next_actor7seg: state_typeActor7seg;
+
 begin
 -- FSM Prozess zur Realisierung der Speicherelemente - Abhängig vom Takt den nächsten Zustand setzen
 --> In Versuch 6 zu implementieren!-
@@ -313,8 +317,87 @@ begin
  -- when ... TODO
 		when AutoActor1|AutoActor2|AutoActor3 =>
 			LEDsOut(5 downto 4)<= "10";
-			LEDsOut(3 downto 0)<= "1010";
+			LEDsOut(3 downto 0)<= "0000";
+		
+			if(Switches(3) = '0') then -- SW3 aus
+				if(Switches(0) = '1' and Switches(1) = '0') then -- LightDiff
+					SevenSegmentValue <= (others => '0');  
+					SevenSegmentValue(11 downto 0) <= std_logic_vector(ControlLightDiffOut(11 downto 0)); 
+				elsif (Switches(1) = '1' and Switches(0) = '0') then -- TempDiff
+					SevenSegmentValue <= (others => '0');  
+					SevenSegmentValue(12 downto 0) <= std_logic_vector(ControlTempDiffOut); 
+				elsif (Switches(1) = '0' and Switches(0) = '0') then
+					SevenSegmentValue <= (others => '0');  
+				else
+					next_actor7seg <= current_actor7seg;
+					
+					-- es wird durch Drücken von Button2 geändert, welcher Sensorwert angezeigt wird
+					case current_actor7seg is
 
+						-- Startzustand
+						when InitA1 =>
+							SevenSegmentValue <= (others => '0');  
+							if(ButtonsIn(2) = '1') then
+								next_actor7seg <= InitA2;
+							end if;
+						when InitA2 =>
+							if(ButtonsIn(2) = '0') then
+								next_actor7seg <= LightD1;
+							end if;
+					
+						-- Licht
+						when LightA1 =>
+							SevenSegmentValue <= (others => '0');  
+							SevenSegmentValue(11 downto 0) <= std_logic_vector(ControlLightDiffOut(11 downto 0));
+							if(ButtonsIn(2) = '1') then
+								next_actor27seg <= LightA2;
+							end if;
+						when LightA2 =>
+							SevenSegmentValue <= (others => '0');  
+							SevenSegmentValue(11 downto 0) <= std_logic_vector(ControlLightDiffOut(11 downto 0)); 
+							if(ButtonsIn(2) = '0') then
+								next_actor7seg <= TempA1;
+							end if;
+						
+						-- Temperatur
+						when TempA1 =>
+							SevenSegmentValue <= (others => '0');  
+							SevenSegmentValue(12 downto 0) <= std_logic_vector(ControlTempDiffOut);
+							if(ButtonsIn(2) = '1') then
+								next_actor7seg <= TempA2;
+							end if;
+						when TempA2 =>
+							SevenSegmentValue <= (others => '0');  
+							SevenSegmentValue(12 downto 0) <= std_logic_vector(ControlTempDiffOut);
+							if(ButtonsIn(2) = '0') then
+								next_actor7seg <= InitA1;
+							end if;
+						
+						when others => null;
+
+					end case;
+				end if;
+
+			else -- SW3 an:
+				if(Switches(0) = '1') then -- Licht
+					PWM3LightValue <= PWM3LightValueControl;
+				else
+					PWM3LightValue <= (others => '0');
+				end if;
+				if(Switches(2) = '1') then
+					if(Switches(1) = '1') then -- Lüfter außen
+						PWM2FanOutsideValue <= PWM2FanOutsideValueControl;
+					else
+						PWM2FanOutsideValue <=  (others => '0');
+					end if;
+				else
+					if(Switches(1) = '1') then -- Lüfter innen
+						PWM1FanInsideValue <= PWM1FanInsideValueControl;
+					else
+						PWM1FanInsideValue <=  (others => '0');
+					end if;
+				end if;
+			end if;
 
  -- Versuch 10
  -- Modus 4: Steuerung ueber Smartphone-App
