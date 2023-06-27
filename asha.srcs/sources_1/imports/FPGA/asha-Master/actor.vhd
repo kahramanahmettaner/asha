@@ -390,6 +390,7 @@ begin
 					else
 						PWM2FanOutsideValue <=  (others => '0');
 					end if;
+					
 				else
 					if(Switches(1) = '1') then -- Lüfter innen
 						PWM1FanInsideValue <= PWM1FanInsideValueControl;
